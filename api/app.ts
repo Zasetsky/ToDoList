@@ -1,10 +1,11 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import { Task } from './models';
 
 let tasks: Task[] = [];
-const app = express();
 const port = 3000;
-app
+const app = express()
+  .use(bodyParser.json())
   .get('/tasks', (req, res) => {
     res.send(tasks);
   })
@@ -15,7 +16,7 @@ app
       return;
     }
 
-    const id = tasks.reduce((res, curr) => {
+    const id = 1 + tasks.reduce((res, curr) => {
       return res > curr.id ? res : curr.id;;
     }, 0);
 
@@ -52,7 +53,7 @@ app
 
       task.description = description;
       task.isCompleted = isCompleted;
-      res.sendStatus(202);
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }
