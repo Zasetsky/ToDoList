@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import { Task } from './models';
 
 let tasks: Task[] = [];
-const port = 3000;
+const port = 3001;
 const app = express()
   .use(bodyParser.json())
   .get('/tasks', (req, res) => {
