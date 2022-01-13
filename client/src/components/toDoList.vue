@@ -4,7 +4,7 @@
     <input type="text" v-model="input" placeholder="What need to do?"/>
     <button @click="addLists()">add</button>
     <ul>
-      <li v-for="list in lists" :key="list">{{ list }}</li>
+      <li v-for="list in lists" :key="list">{{ list }}<button @click="removeList(list)" >del</button></li>
     </ul>
   </div>
 </template>
@@ -25,6 +25,12 @@ export default {
       }
       this.lists.push(this.input);
       this.input = '';
+    },
+    removeList(li) {
+      const list = this.lists.indexOf(li);
+      if (list !== -1) {
+        this.lists.splice(list, 1);
+      }
     },
   },
 };
