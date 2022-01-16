@@ -20,7 +20,6 @@ export default {
     return {
       input: '',
       lists: [],
-      btns: [],
     };
   },
   methods: {
@@ -33,9 +32,8 @@ export default {
     },
 
     removeList(i) {
-      if (this.lists[i] !== -1 && this.btns[i] !== -1) {
+      if (this.lists[i] !== -1) {
         this.lists.splice(this.lists[i], 1);
-        this.btns.splice(this.btns[i], 1);
       }
     },
 
@@ -83,6 +81,8 @@ ul li {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  width: 1000px;
+  display: inline-table;
 }
 
 ul li:nth-child(odd) {
@@ -125,10 +125,12 @@ ul li.checked::before {
 }
 
 .header {
+  display: inline-table;
   background-color: #f44336;
   padding: 30px 40px;
   color: white;
   text-align: center;
+  width: 1000px;
 }
 
 .header:after {
