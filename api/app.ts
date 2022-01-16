@@ -46,7 +46,7 @@ const app = express()
     const task = tasks.find(t => t.id == id);
     if (task) {
       const { description, isCompleted } = req.body as Task;
-      if (!description) {
+      if (!description || isCompleted == null) {
         res.sendStatus(400);
         return;
       }
