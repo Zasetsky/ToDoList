@@ -6,8 +6,8 @@
     <span @click="addtasks()" class="addBtn">add</span>
     </div>
     <ul>
-      <li v-for="(task, index) in tasks" :key="index" class="task" :class="gettaskClasses(task)" @click="checktask(index)">
-        {{ task.text }}<span class="close" @click.prevent.stop="removetask(index)">x</span>
+      <li v-for="(task, index) in tasks" :key="index" class="task" :class="getTaskClasses(task)" @click="checktask(index)">
+        {{ task.description }}<span class="close" @click.prevent.stop="removetask(index)">x</span>
         </li>
     </ul>
   </div>
@@ -26,40 +26,43 @@ export default {
   },
 
   mounted() {
-    axios.get('http://127.0.0.1:3001/tasks/')
+    axios.get('http://localhost:3001/tasks')
       .then((response) => {
-      // handle success
-        console.log(response);
+        this.tasks = response.data;
       });
   },
 
   methods: {
-    addtasks() {
+    async addtasks() {
       if (!this.input) {
         return;
       }
-      this.tasks.push({ text: this.input, isChecked: false });
+      await axios.post('http://localhost:3001/tasks', { description: this.input });
       this.input = '';
+      const response = await axios.get('http://localhost:3001/tasks');
+      this.tasks = response.data;
     },
 
-    removetask(i) {
-      if (this.tasks[i] !== -1) {
-        this.tasks.splice(this.tasks[i], 1);
-      }
+    async removetask(i) {
+      await axios.delete(`http://localhost:3001/tasks/${this.tasks[i].id}`);
+      const response = await axios.get('http://localhost:3001/tasks');
+      this.tasks = response.data;
     },
 
-    checktask(i) {
+    async checktask(i) {
       const task = this.tasks[i];
-      if (!task.isChecked) {
-        task.isChecked = true;
+      if (!task.isCompleted) {
+        await axios.put(`http://localhost:3001/tasks/${this.tasks[i].id}`, { description: this.tasks[i].description, isCompleted: true });
       } else {
-        task.isChecked = false;
+        await axios.put(`http://localhost:3001/tasks/${this.tasks[i].id}`, { description: this.tasks[i].description, isCompleted: false });
       }
+      const response = await axios.get('http://localhost:3001/tasks');
+      this.tasks = response.data;
     },
 
-    gettaskClasses(task) {
+    getTaskClasses(task) {
       const classes = [];
-      if (task.isChecked) {
+      if (task.isCompleted) {
         classes.push('checked');
       } if (task.isImportant) {
         classes.push('important');
