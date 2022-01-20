@@ -1,56 +1,67 @@
 <template>
   <div>
     <div class="header">
-    <h2>To Do List</h2>
+    <h2>To Do task</h2>
     <input type="text" v-model="input" placeholder="What need to do?"/>
-    <span @click="addLists()" class="addBtn">add</span>
+    <span @click="addtasks()" class="addBtn">add</span>
     </div>
     <ul>
-      <li v-for="(list, index) in lists" :key="index" class="list" :class="getListClasses(list)" @click="checkList(index)">
-        {{ list.text }}<span class="close" @click="removeList(index)">x</span>
+      <li v-for="(task, index) in tasks" :key="index" class="task" :class="gettaskClasses(task)" @click="checktask(index)">
+        {{ task.text }}<span class="close" @click.prevent.stop="removetask(index)">x</span>
         </li>
     </ul>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  name: 'toDoLists',
+  name: 'toDoList',
   data() {
     return {
       input: '',
-      lists: [],
+      tasks: [],
     };
   },
+
+  mounted() {
+    axios.get('http://127.0.0.1:3001/tasks/')
+      .then((response) => {
+      // handle success
+        console.log(response);
+      });
+  },
+
   methods: {
-    addLists() {
+    addtasks() {
       if (!this.input) {
         return;
       }
-      this.lists.push({ text: this.input, isChecked: false });
+      this.tasks.push({ text: this.input, isChecked: false });
       this.input = '';
     },
 
-    removeList(i) {
-      if (this.lists[i] !== -1) {
-        this.lists.splice(this.lists[i], 1);
+    removetask(i) {
+      if (this.tasks[i] !== -1) {
+        this.tasks.splice(this.tasks[i], 1);
       }
     },
 
-    checkList(i) {
-      const list = this.lists[i];
-      if (!list.isChecked) {
-        list.isChecked = true;
+    checktask(i) {
+      const task = this.tasks[i];
+      if (!task.isChecked) {
+        task.isChecked = true;
       } else {
-        list.isChecked = false;
+        task.isChecked = false;
       }
     },
 
-    getListClasses(list) {
+    gettaskClasses(task) {
       const classes = [];
-      if (list.isChecked) {
+      if (task.isChecked) {
         classes.push('checked');
-      } if (list.isImportant) {
+      } if (task.isImportant) {
         classes.push('important');
       }
       return classes;

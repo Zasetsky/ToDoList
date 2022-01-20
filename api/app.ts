@@ -1,11 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import { Task } from './models';
 
 let tasks: Task[] = [];
 const port = 3001;
 const app = express()
   .use(bodyParser.json())
+  .use(cors())
+  .options('*', cors())
   .get('/tasks', (req, res) => {
     res.send(tasks);
   })
