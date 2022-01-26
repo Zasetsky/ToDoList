@@ -1,8 +1,6 @@
 # to_do_list
-...
 
-<!-- ![Иллюстрация к проекту](https://github.com/jon/coolproject/raw/master/image/image.png) -->
-...
+![Иллюстрация к проекту](https://github.com/Zasetsky/ToDoList/blob/master/client/screenshots/to_do_list.png)
 
 ## Project setup
 ```
